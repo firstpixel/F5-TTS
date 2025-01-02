@@ -201,7 +201,7 @@ class Trainer:
         gc.collect()
         return step
 
-    def train(self, train_dataset: Dataset, num_workers=2, resumable_with_seed: int = None):
+    def train(self, train_dataset: Dataset, num_workers=16, resumable_with_seed: int = None):
         if self.log_samples:
             from f5_tts.infer.utils_infer import cfg_strength, load_vocoder, nfe_step, sway_sampling_coef
 
