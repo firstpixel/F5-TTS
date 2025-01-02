@@ -14,6 +14,14 @@ from tqdm import tqdm
 from f5_tts.model.modules import MelSpec
 from f5_tts.model.utils import default
 
+def get_audio_file_path(file_name):  # Function to dynamically construct the path
+    """Constructs the audio file path based on the environment."""
+    if "google.colab" in str(get_ipython()):  # Check if running in Colab
+        base_path = "/content/drive/MyDrive/git/F5-TTS/data/pt-br_char/wavs"
+    else:
+        base_path = "/Users/gilbeyruth/AIProjects/AgentYoutube/F5-TTS/data/pt-br_char/wavs"
+    return os.path.join(base_path, file_name)
+
 
 class HFDataset(Dataset):
     def __init__(
@@ -38,6 +46,8 @@ class HFDataset(Dataset):
             target_sample_rate=target_sample_rate,
             mel_spec_type=mel_spec_type,
         )
+
+
 
     def get_frame_len(self, index):
         row = self.data[index]
@@ -129,7 +139,11 @@ class CustomDataset(Dataset):
     def __getitem__(self, index):
         while True:
             row = self.data[index]
-            audio_path = row["audio_path"]
+            
+            file_name = row["audio"]["path"].split("/")[-1]  # Extract file name
+            audio_path = get_audio_file_path(file_name)
+            
+            #audio_path = row["audio_path"]
             text = row["text"]
             duration = row["duration"]
 
