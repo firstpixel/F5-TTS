@@ -66,7 +66,7 @@ def main(cfg):
     train_dataset = load_dataset(cfg.datasets.name, tokenizer, mel_spec_kwargs=cfg.model.mel_spec)
     trainer.train(
         train_dataset,
-        num_workers=2, #cfg.datasets.num_workers,
+        num_workers=cfg.datasets.num_workers,
         resumable_with_seed=666,  # seed for shuffling dataset
     )
 
